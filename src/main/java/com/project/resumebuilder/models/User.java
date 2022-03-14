@@ -15,8 +15,7 @@ public class User {
     private String password;
     private boolean active;
 
-    //TODO: Remove Roles if not required
-    private String roles;
+
 
     public int getId() {
         return id;
@@ -48,13 +47,5 @@ public class User {
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    public String getRoles() {
-        return roles;
-    }
-
-    public void setRoles(String roles) {
-        this.roles = roles;
     }
 }
