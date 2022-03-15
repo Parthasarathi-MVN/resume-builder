@@ -1,5 +1,8 @@
 package com.project.resumebuilder.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,6 +17,18 @@ public class UserProfile {
     private String summary;
     private String firstName;
     private String lastName;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "job_id")
+    List<Job> jobs = new ArrayList<Job>();
+
+    public List<Job> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(List<Job> jobs) {
+        this.jobs = jobs;
+    }
 
     public String getFirstName() {
         return firstName;
