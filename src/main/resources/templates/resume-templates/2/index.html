@@ -1,9 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link type="text/css" rel="stylesheet" href="../resume-templates/2/style.css" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="../resume-templates/2/style.css"
+    />
 
     <title>One Page Resume</title>
 
@@ -12,18 +16,30 @@
 
   <body>
     <div id="page-wrap">
-      <img src="../resume-templates/2/images/cthulu.png" alt="Photo of Cthulu" id="pic" />
+      <img
+        src="../resume-templates/2/images/cthulu.png"
+        alt="Photo of Cthulu"
+        id="pic"
+      />
 
       <div id="contact-info" class="vcard">
         <!-- Microformats! -->
 
-        <h1 class="fn">C'thulhu</h1>
+        <h1 class="fn">
+          <span th:text="${userProfile.firstName}">C'thulhu</span>
+          <span th:text="${userProfile.lastName}">C'thulhu Last</span>
+        </h1>
+        <h2 th:text="${userProfile.designation}">Web Designer, Director</h2>
 
         <p>
-          Cell: <span class="tel">555-666-7777</span><br />
+          Cell:
+          <span class="tel" th:text="${userProfile.phone}">555-666-7777</span
+          ><br />
           Email:
           <a class="email" href="mailto:greatoldone@lovecraft.com"
-            >greatoldone@lovecraft.com</a
+            ><span th:text="${userProfile.email}"
+              >greatoldone@lovecraft.com</span
+            ></a
           >
         </p>
       </div>
