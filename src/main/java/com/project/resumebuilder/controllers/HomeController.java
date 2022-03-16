@@ -54,7 +54,7 @@ public class HomeController {
 //
 //        userProfileRepository.save(userProfile);
 
-//        String s = userProfile.getJobs().get(0).getResponsibilities().get(0);
+        String s = userProfile.getEducations().get(0).getCollege();
 
         System.out.println(s);
         return "resume-templates/"+userProfile.getThemeChoice()+"/index";
