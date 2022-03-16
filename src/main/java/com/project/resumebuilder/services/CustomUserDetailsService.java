@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     UserRepository repository;
 
 
-    //Overriding default load user functionality of spring security and loading our custom users for database
+    //Overriding default load user functionality of spring security and loading our custom users from database
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = repository.findByUserName(username);

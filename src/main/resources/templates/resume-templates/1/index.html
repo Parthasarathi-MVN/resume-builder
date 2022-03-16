@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
 <title>Joe Bloggs - Curriculum Vitae</title>
 
@@ -62,7 +62,11 @@
 
 					<!-- TODO: Tackle present date -->
 					<p class="subDetails"> <span th:text="${job.formattedStartDate}">April 2011</span> - <span th:text="${job.isCurrentJob}? 'Present' : ${job.formattedEndDate}">Present</span></p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultricies massa et erat luctus hendrerit. Curabitur non consequat enim. Vestibulum bibendum mattis dignissim. Proin id sapien quis libero interdum porttitor.</p>
+
+
+					<ul th:each="res: ${job.responsibilities}">
+						<li th:text="${res}">Responsibility</li>
+					</ul>
 				</article>
 
 

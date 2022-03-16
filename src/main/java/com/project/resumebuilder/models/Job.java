@@ -22,7 +22,9 @@ public class Job {
     private boolean isCurrentJob;
 
     @ElementCollection(targetClass = String.class)
+    @CollectionTable(joinColumns = @JoinColumn(name = "job_id"))
     private List<String> responsibilities = new ArrayList<>();
+
 
     public List<String> getResponsibilities() {
         return responsibilities;
@@ -31,6 +33,7 @@ public class Job {
     public void setResponsibilities(List<String> responsibilities) {
         this.responsibilities = responsibilities;
     }
+
 
     public boolean isCurrentJob() {
         return isCurrentJob;
@@ -78,6 +81,8 @@ public class Job {
     {
         return endDate.format(DateTimeFormatter.ofPattern("MMM-yyyy"));
     }
+
+
 
     
 

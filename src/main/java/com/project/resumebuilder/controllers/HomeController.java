@@ -1,5 +1,6 @@
 package com.project.resumebuilder.controllers;
 
+import com.project.resumebuilder.models.Job;
 import com.project.resumebuilder.models.UserProfile;
 import com.project.resumebuilder.repositories.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class HomeController {
 
     @Autowired
     UserProfileRepository userProfileRepository;
+
+
+
 
     @GetMapping("/")
     public String home()
@@ -30,23 +34,29 @@ public class HomeController {
     @GetMapping("/view/{userName}")
     public String view(@PathVariable String userName, Model model)
     {
+
+        Job job = new Job();
         UserProfile userProfile = userProfileRepository.findByUserName(userName);
-        // System.out.println(userProfile.getThemeChoice());
+    
         if(userProfile == null)
         {
             new RuntimeException("Not Found "+userName);
         }
 
-
         model.addAttribute("userName", userName); // the String i.e., the first parameter will be used as a variable in the frontend and the second attribute is you get as a parameter to the function
         model.addAttribute("userProfile", userProfile);
-        System.out.println(userProfile.getJobs().get(0).getCompany());
 
+//        job.getResponsibilities().add("relativity");
+//        job.getResponsibilities().add("quantum mechanics");
+//        job.getResponsibilities().add("blow");
+//
+//        userProfile.getJobs().add(job);
+//
+//        userProfileRepository.save(userProfile);
 
+//        String s = userProfile.getJobs().get(0).getResponsibilities().get(0);
 
-
-
-
+        System.out.println(s);
         return "resume-templates/"+userProfile.getThemeChoice()+"/index";
     }
 }

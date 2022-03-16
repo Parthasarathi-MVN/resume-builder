@@ -19,7 +19,7 @@ public class UserProfile {
     private String lastName;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "job_id")
+    @JoinColumn(name = "user_id")
     List<Job> jobs = new ArrayList<Job>();
 
     public List<Job> getJobs() {
@@ -105,4 +105,5 @@ public class UserProfile {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
 }
