@@ -12,6 +12,16 @@
     <form action="#" th:action="@{/edit}" th:object="${userProfile}" method="post">
 
         <div class="mb-3">
+            <label class="form-label">Select your resume theme</label>
+            <select th:field="${userProfile.themeChoice}">
+
+                <option th:each="i : ${#numbers.sequence(1,3)}" th:value="${i}" th:text="${'Theme ' + i}"></option>
+
+            </select>
+        </div>
+
+
+        <div class="mb-3">
             <label class="form-label">First Name</label>
             <input type="text" class="form-control" th:field="${userProfile.firstName}">
             <!--This firstName you are getting from userProfile which you are sending from controller and it's name should be similar to the attribute declared in the Model. And instead of  th:field="${userProfile.firstName}" you can also use th:field="*{firstName}"-->
@@ -44,6 +54,15 @@
             <input type="text" class="form-control" th:field="${userProfile.designation}">
             <!--This firstName you are getting from userProfile which you are sending from controller and it's name should be similar to the attribute declared in the Model. And instead of  th:field="${userProfile.firstName}" you can also use th:field="*{firstName}"-->
             <div class="form-text">Enter your current designation</div>
+        </div>
+
+
+
+        <div class="mb-3">
+            <label class="form-label">Summary</label>
+            <textarea type="text" class="form-control" th:field="${userProfile.summary}"></textarea>
+            <!--This firstName you are getting from userProfile which you are sending from controller and it's name should be similar to the attribute declared in the Model. And instead of  th:field="${userProfile.firstName}" you can also use th:field="*{firstName}"-->
+            <div class="form-text">Enter something about yourself.</div>
         </div>
 
         <h2>Experience</h2>

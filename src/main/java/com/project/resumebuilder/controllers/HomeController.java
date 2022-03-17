@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -45,9 +46,20 @@ public class HomeController {
     }
 
     @PostMapping("/edit")
-    public String postEdit(Principal principal, Model model)
+    public String postEdit(Principal principal, Model model, @ModelAttribute UserProfile userProfile)
     {
         String userName = principal.getName();
+
+        UserProfile savedUserProfile = userProfileRepository.findByUserName(userName); //retriving the user from database and finding his ID because the @ModelAttribute received from frontend does not have Id. It just has other fields to edit but not Id. So we retrive the savedUserProfile from database and set the @ModelAttribute's userProfile Id  with with help of savedUserProfile.
+        userProfile.setId(savedUserProfile.getId());
+        userProfile.setUserName(userName); // or you can do userProfile.setUserName(savedUserProfile.getUserName())
+
+        if(userProfile == null)
+        {
+            new RuntimeException("Not Found "+userName);
+        }
+
+        userProfileRepository.save(userProfile);
 
         return "redirect:/view/" + userName;
     }
@@ -83,9 +95,9 @@ public class HomeController {
 //
 //        userProfileRepository.save(userProfile);
 
-        String s = userProfile.getEducations().get(0).getCollege();
-
-        System.out.println(s);
+//        String s = userProfile.getEducations().get(0).getCollege();
+//
+//        System.out.println(s);
         return "resume-templates/"+userProfile.getThemeChoice()+"/index";
     }
 }
