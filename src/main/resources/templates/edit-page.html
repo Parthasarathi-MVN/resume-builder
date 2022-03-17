@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
 <h1 th:text="${userName} + '\'s Profile'"></h1>
 
-<div class="container" style="max-width:600px">
+<div class="container">
     <form action="#" th:action="@{/edit}" th:object="${userProfile}" method="post">
 
         <div class="mb-3">
@@ -47,6 +46,73 @@
             <div class="form-text">Enter your current designation</div>
         </div>
 
+        <h2>Experience</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Company</th>
+                <th>Designation</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Current Job?</th>
+            </tr>
+            </thead>
+
+
+            <tr th:each="job, stat: ${userProfile.jobs}">
+
+<!--                all the attributes of job object-->
+                <td><input class="form-control" th:field="${userProfile.jobs[__${stat.index}__].company}"></td>
+                <td><input class="form-control" th:field="${userProfile.jobs[__${stat.index}__].designation}"></td>
+                <td><input type="date" class="form-control" th:field="${userProfile.jobs[__${stat.index}__].startDate}"></td>
+                <td><input type="date" class="form-control" th:field="${userProfile.jobs[__${stat.index}__].endDate}"></td>
+                <td><input type="checkbox" class="" th:field="${userProfile.jobs[__${stat.index}__].currentJob}"></td> <!-- sometimes isCurrentJob gives a problem. should not use "is" in a variable, "is" gets generated automatically in getters and setters. -->
+            </tr>
+
+        </table>
+
+        <h2>Education</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th>College</th>
+                <th>Qualification</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Summary</th>
+            </tr>
+            </thead>
+
+
+            <tr th:each="education, stat: ${userProfile.educations}">
+
+                <!--                all the attributes of education object-->
+                <td><input class="form-control" th:field="${userProfile.educations[__${stat.index}__].college}"></td>
+                <td><input class="form-control" th:field="${userProfile.educations[__${stat.index}__].qualification}"></td>
+                <td><input type="date" class="form-control" th:field="${userProfile.educations[__${stat.index}__].startDate}"></td>
+                <td><input type="date" class="form-control" th:field="${userProfile.educations[__${stat.index}__].endDate}"></td>
+                <td><input type="text" class="form-control" th:field="${userProfile.educations[__${stat.index}__].summary}"></td> <!-- sometimes isCurrentJob gives a problem. should not use "is" in a variable, "is" gets generated automatically in getters and setters. -->
+            </tr>
+
+        </table>
+
+
+
+        <h2>Skills</h2>
+
+        <table>
+
+            <tr th:each="skill, stat: ${userProfile.skills}">
+
+                <!--                all the attributes of education object-->
+                <td><input class="form-control" th:field="${userProfile.skills[__${stat.index}__]}"></td>
+            </tr>
+
+        </table>
+
+        <input type="submit" value="Submit">
 
     </form>
 </div>
