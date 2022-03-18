@@ -7,10 +7,23 @@
 
 </head>
 <body>
-<h1>Welcome <b th:text="${userProfile.firstName + ' ' + userProfile.firstName}"></b></h1>
+<!--<h1>Welcome <b th:text="${userProfile.firstName + ' ' + userProfile.firstName}"></b></h1>-->
+<!--this above line is leading to null as we do not capture firstName and lastName in the beginning of registration process and after logging in we redirect to this page. This is creating a problem to catch firstName/lastName and render it.-->
 
-<a class="btn btn-danger" th:href="@{/logout}">Logout</a>
-<a th:href="@{edit}">Make your resume</a>
+<div  class="text-center">
+    <h1>Welcome <b th:text="${userName}"></b></h1>
+</div>
+
+
+<div class="text-center">
+    <a class="btn btn-danger" th:href="@{/logout}">Logout</a>
+
+</div>
+
+<div class="text-center">
+    <a th:href="@{edit}">Make your resume</a>
+</div>
+
 
 </body>
 </html>
