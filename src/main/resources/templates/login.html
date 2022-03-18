@@ -20,22 +20,21 @@
     </div>
 
 
-    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div style="max-width: 600px;  margin: 0 auto" id="invalidPassUser" th:if="${param.error}" class="alert alert-danger" role="alert">
         Invalid username or password
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <div th:if="${param.logout}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <div style="max-width: 600px;  margin: 0 auto" id="loggedOut"  th:if="${param.logout}" class="alert alert-success" role="alert">
         Successfully logged out
     </div>
 
-
-
+    <div class="text-center">
     <form
             th:action="@{/login}"
             method="post"
             style="max-width: 600px; margin: 0 auto"
     >
+<!--        No need to bind an th:object in "form" element for login because Spring handles login functionality-->
         <div class="m-4">
             <div class="form-group row m-3">
                 <label class="col-form-label col-4">Username</label>
@@ -68,8 +67,20 @@
         </div>
     </form>
 
+    </div>
+
     <div>
         <p>New here? <a th:href="@{/signup}">Register yourself here!</a></p>
     </div>
+
+<!--    JQuery-->
+<!--    Using it for dismissing the alert after logout or invalid password-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        setTimeout(function() {
+            $('#invalidPassUser').fadeOut('slow')
+            $('#loggedOut').fadeOut('slow');
+        }, 5000);
+    </script>
 </body>
 </html>

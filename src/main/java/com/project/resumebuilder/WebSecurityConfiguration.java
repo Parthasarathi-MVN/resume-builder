@@ -52,8 +52,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/home")
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout");
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+//                .logoutSuccessUrl("/login?logout"); //should always use th:logout while rendering that's why you faced this problem
     }
 
 //    @Bean
