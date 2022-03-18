@@ -1,0 +1,4 @@
+TODO:
+--> Add Dynamic loading to other resume themes.
+--> Add forgot password and generate mail to reset password using OAuth or OAuth2.
+--> Understand configure method in WebSecurityConfiguration.

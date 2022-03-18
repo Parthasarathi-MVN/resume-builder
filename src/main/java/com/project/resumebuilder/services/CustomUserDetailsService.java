@@ -23,7 +23,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if(user == null){
             throw new UsernameNotFoundException("User not authorized."); //if invalid username is provided we are checking in database in the throwing exception so that the application doesnot break
         }
-        System.out.println(user.getUserName());
         return new CustomUserDetails(user);
     }
 }

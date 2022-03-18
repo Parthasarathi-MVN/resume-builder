@@ -1,3 +1,5 @@
+//Spring Boot Web and Authentication configuration.
+
 package com.project.resumebuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
@@ -53,13 +53,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
-//                .logoutSuccessUrl("/login?logout"); //should always use th:logout while rendering that's why you faced this problem
+
+//                .logoutSuccessUrl("/login?logout"); //should always use th:logout while rendering that's why you faced this problem. Should not include "params" as you like, in this case "?logout".
     }
 
+
+//    Use this bean if you are not encoding the password while saving in the database because Spring security needs a PasswordEncoder for login functionality.
 //    @Bean
 //    public PasswordEncoder passwordEncoder(){
 //        return NoOpPasswordEncoder.getInstance();
-////        return new BCryptPasswordEncoder();
 //    }
 
 

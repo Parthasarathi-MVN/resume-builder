@@ -1,3 +1,5 @@
+//Endpoints of the API's
+
 package com.project.resumebuilder.controllers;
 
 import com.project.resumebuilder.models.Education;
@@ -16,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-
 
 
 @Controller
@@ -51,31 +52,17 @@ public class HomeController {
     @GetMapping("/login")
     public String login()
     {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        //Preventing the user to access login page after logging in.
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return "login";
         }
-
         return "redirect:/home";
     }
 
 
 //    @PostMapping("/login") there is no need of login logic for spring boot
-//    public String login(User u)
-//    {
-//       User savedUser = userRepository.findByUserName(u.getUserName());
-//       System.out.println("heyyy");
-//       if(savedUser == null)
-//       {
-//           new RuntimeException("Not Found "+u.getUserName());
-//       }
-////       System.out.println(u.getPassword());
-//       if (savedUser.getPassword().equals(u.getPassword()))
-//
-//            return "home";
-//       return "login";
-//    }
 
     @GetMapping("/home")
     public String home(Principal principal, Model model)
@@ -88,10 +75,7 @@ public class HomeController {
         {
             new RuntimeException("Not Found "+userName);
         }
-
         model.addAttribute("userProfile", userProfile);
-
-
         return "home";
     }
 
@@ -119,7 +103,6 @@ public class HomeController {
         {
             userProfile.getSkills().add("");
         }
-
         model.addAttribute("userProfile", userProfile);
         return "edit-page";
     }
@@ -134,7 +117,6 @@ public class HomeController {
         {
             new RuntimeException("Not Found "+userName);
         }
-
         if("job".equals(type))
         {
             userProfile.getJobs().remove(index);
@@ -169,7 +151,6 @@ public class HomeController {
         }
 
         userProfileRepository.save(userProfile);
-
         return "redirect:/view/" + userName;
     }
 
@@ -184,12 +165,10 @@ public class HomeController {
     @GetMapping("/view/{userName}")
     public String view(Principal principal, @PathVariable String userName, Model model)
     {
-
         if (principal != null && principal.getName() != "")
         {
             boolean currentUserProfile = principal.getName().equals(userName);
             model.addAttribute("currentUserProfile", currentUserProfile);
-
         }
 
         Job job = new Job();
@@ -203,17 +182,6 @@ public class HomeController {
         model.addAttribute("userName", userName); // the String i.e., the first parameter will be used as a variable in the frontend and the second attribute is you get as a parameter to the function
         model.addAttribute("userProfile", userProfile);
 
-//        job.getResponsibilities().add("relativity");
-//        job.getResponsibilities().add("quantum mechanics");
-//        job.getResponsibilities().add("blow");
-//
-//        userProfile.getJobs().add(job);
-//
-//        userProfileRepository.save(userProfile);
-
-//        String s = userProfile.getEducations().get(0).getCollege();
-//
-//        System.out.println(s);
         return "resume-templates/"+userProfile.getThemeChoice()+"/index";
     }
 }

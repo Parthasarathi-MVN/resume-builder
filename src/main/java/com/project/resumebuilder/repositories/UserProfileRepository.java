@@ -1,3 +1,5 @@
+//Repositories are used for database read and write.
+
 package com.project.resumebuilder.repositories;
 
 import com.project.resumebuilder.models.UserProfile;

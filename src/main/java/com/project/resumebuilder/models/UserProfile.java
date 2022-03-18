@@ -18,6 +18,10 @@ public class UserProfile {
     private String firstName;
     private String lastName;
 
+    private String email;
+    private String phone;
+    private String designation;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
     List<Job> jobs = new ArrayList<Job>();
@@ -33,7 +37,6 @@ public class UserProfile {
     public List<String> getSkills() {
         return skills;
     }
-
     public void setSkills(List<String> skills) {
         this.skills = skills;
     }
@@ -41,7 +44,6 @@ public class UserProfile {
     public List<Education> getEducations() {
         return educations;
     }
-
     public void setEducations(List<Education> educations) {
         this.educations = educations;
     }
@@ -49,7 +51,6 @@ public class UserProfile {
     public List<Job> getJobs() {
         return jobs;
     }
-
     public void setJobs(List<Job> jobs) {
         this.jobs = jobs;
     }
@@ -57,7 +58,6 @@ public class UserProfile {
     public String getFirstName() {
         return firstName;
     }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -65,7 +65,6 @@ public class UserProfile {
     public String getLastName() {
         return lastName;
     }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -73,7 +72,6 @@ public class UserProfile {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -81,7 +79,6 @@ public class UserProfile {
     public String getPhone() {
         return phone;
     }
-
     public void setPhone(String phone) {
         this.phone = phone;
     }
@@ -89,19 +86,15 @@ public class UserProfile {
     public String getDesignation() {
         return designation;
     }
-
     public void setDesignation(String designation) {
         this.designation = designation;
     }
 
-    private String email;
-    private String phone;
-    private String designation;
+
 
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -109,7 +102,6 @@ public class UserProfile {
     public int getThemeChoice() {
         return themeChoice;
     }
-
     public void setThemeChoice(int themeChoice) {
         this.themeChoice = themeChoice;
     }
@@ -117,7 +109,6 @@ public class UserProfile {
     public String getSummary() {
         return summary;
     }
-
     public void setSummary(String summary) {
         this.summary = summary;
     }
@@ -125,7 +116,6 @@ public class UserProfile {
     public String getUserName() {
         return userName;
     }
-
     public void setUserName(String userName) {
         this.userName = userName;
     }

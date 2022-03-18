@@ -25,6 +25,8 @@ public class Job {
     private LocalDate endDate;
     private boolean isCurrentJob;
 
+
+    //Get more intuition about this @ElementCollection annotation.
     @ElementCollection(targetClass = String.class)
     @CollectionTable(joinColumns = @JoinColumn(name = "job_id"))
     private List<String> responsibilities = new ArrayList<>();
@@ -33,11 +35,9 @@ public class Job {
     public List<String> getResponsibilities() {
         return responsibilities;
     }
-
     public void setResponsibilities(List<String> responsibilities) {
         this.responsibilities = responsibilities;
     }
-
 
     public boolean isCurrentJob() {
         return isCurrentJob;
@@ -45,30 +45,35 @@ public class Job {
     public void setCurrentJob(boolean isCurrentJob) {
         this.isCurrentJob = isCurrentJob;
     }
+
     public int getId() {
         return id;
     }
     public void setId(int id) {
         this.id = id;
     }
+
     public String getCompany() {
         return company;
     }
     public void setCompany(String company) {
         this.company = company;
     }
+
     public String getDesignation() {
         return designation;
     }
     public void setDesignation(String designation) {
         this.designation = designation;
     }
+
     public LocalDate getStartDate() {
         return startDate;
     }
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
+
     public LocalDate getEndDate() {
         return endDate;
     }
@@ -76,11 +81,11 @@ public class Job {
         this.endDate = endDate;
     }
 
+    //custom function for getting only month and year. This is to display only month and year in the resume.
     public String getFormattedStartDate()
     {
         return startDate.format(DateTimeFormatter.ofPattern("MMM-yyyy"));
     }
-
     public String getFormattedEndDate()
     {
         return endDate.format(DateTimeFormatter.ofPattern("MMM-yyyy"));

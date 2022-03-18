@@ -1,3 +1,5 @@
+// This Custom User Details prevents Spring Security from creating a default user and display its password in  the console
+
 package com.project.resumebuilder.models;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -7,18 +9,15 @@ import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
 
-
     private String userName;
     private String password;
     private boolean active;
-
 
     public CustomUserDetails(User user) {
         this.userName = user.getUserName();
         this.password = user.getPassword();
         this.active = user.isActive();
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
