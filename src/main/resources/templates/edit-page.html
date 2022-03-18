@@ -75,6 +75,7 @@
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Current Job?</th>
+                <th></th> <!--just for delete another cell-->
             </tr>
             </thead>
 
@@ -87,9 +88,12 @@
                 <td><input type="date" class="form-control" th:field="${userProfile.jobs[__${stat.index}__].startDate}"></td>
                 <td><input type="date" class="form-control" th:field="${userProfile.jobs[__${stat.index}__].endDate}"></td>
                 <td><input type="checkbox" class="" th:field="${userProfile.jobs[__${stat.index}__].currentJob}"></td> <!-- sometimes isCurrentJob gives a problem. should not use "is" in a variable, "is" gets generated automatically in getters and setters. -->
+                <td><a th:href="@{'./delete?type=job&index=' + ${stat.index}}">Delete</a></td>
             </tr>
 
         </table>
+
+       <p><a href="./edit?add=job">Add Job</a></p>
 
         <h2>Education</h2>
 
@@ -101,6 +105,7 @@
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Summary</th>
+                <th></th> <!--just for delete another cell-->
             </tr>
             </thead>
 
@@ -113,9 +118,11 @@
                 <td><input type="date" class="form-control" th:field="${userProfile.educations[__${stat.index}__].startDate}"></td>
                 <td><input type="date" class="form-control" th:field="${userProfile.educations[__${stat.index}__].endDate}"></td>
                 <td><input type="text" class="form-control" th:field="${userProfile.educations[__${stat.index}__].summary}"></td> <!-- sometimes isCurrentJob gives a problem. should not use "is" in a variable, "is" gets generated automatically in getters and setters. -->
+                <td><a th:href="@{'./delete?type=education&index=' + ${stat.index}}">Delete</a></td>
             </tr>
 
         </table>
+        <p><a href="./edit?add=education">Add Education</a></p>
 
 
 
@@ -127,9 +134,12 @@
 
                 <!--                all the attributes of education object-->
                 <td><input class="form-control" th:field="${userProfile.skills[__${stat.index}__]}"></td>
+                <td><a th:href="@{'./delete?type=skill&index=' + ${stat.index}}">Delete</a></td>
             </tr>
 
         </table>
+
+        <p><a href="./edit?add=skill">Add Skill </a></p>
 
         <input type="submit" value="Submit">
 

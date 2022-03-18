@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://thymeleaf.org" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link
@@ -28,6 +28,8 @@
         <h1 class="fn">
           <span th:text="${userProfile.firstName}">C'thulhu</span>
           <span th:text="${userProfile.lastName}">C'thulhu Last</span>
+
+          <a th:if="${currentUserProfile}" href="/edit">Edit</a>
         </h1>
         <h2 th:text="${userProfile.designation}">Web Designer, Director</h2>
 

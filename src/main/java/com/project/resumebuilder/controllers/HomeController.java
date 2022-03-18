@@ -1,18 +1,21 @@
 package com.project.resumebuilder.controllers;
 
+import com.project.resumebuilder.models.Education;
 import com.project.resumebuilder.models.Job;
 import com.project.resumebuilder.models.User;
 import com.project.resumebuilder.models.UserProfile;
 import com.project.resumebuilder.repositories.UserProfileRepository;
+import com.project.resumebuilder.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+
 
 
 @Controller
@@ -21,17 +24,75 @@ public class HomeController {
     @Autowired
     UserProfileRepository userProfileRepository;
 
+    @Autowired
+    UserRepository userRepository;
 
 
+
+    @PostMapping("/register")
+    public String signUp(User user)
+    {
+
+        user.setActive(true);
+        userRepository.save(user);
+        return "redirect:/login";
+    }
 
     @GetMapping("/")
-    public String home()
+    public String index()
     {
+        return "index";
+    }
+
+    @GetMapping("/login")
+    public String login()
+    {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "login";
+        }
+
+        return "redirect:/home";
+    }
+
+
+//    @PostMapping("/login") there is no need of login logic for spring boot
+//    public String login(User u)
+//    {
+//       User savedUser = userRepository.findByUserName(u.getUserName());
+//       System.out.println("heyyy");
+//       if(savedUser == null)
+//       {
+//           new RuntimeException("Not Found "+u.getUserName());
+//       }
+////       System.out.println(u.getPassword());
+//       if (savedUser.getPassword().equals(u.getPassword()))
+//
+//            return "home";
+//       return "login";
+//    }
+
+    @GetMapping("/home")
+    public String home(Principal principal, Model model)
+    {
+        String userName = principal.getName();
+        model.addAttribute("userName", userName); //for userName
+
+        UserProfile userProfile = userProfileRepository.findByUserName(userName);
+        if(userProfile == null)
+        {
+            new RuntimeException("Not Found "+userName);
+        }
+
+        model.addAttribute("userProfile", userProfile);
+
+
         return "home";
     }
 
     @GetMapping("/edit")
-    public String edit(Principal principal, Model model)
+    public String edit(Principal principal, Model model, @RequestParam(required = false) String add)
     {
         String userName = principal.getName();
         model.addAttribute("userName", userName);
@@ -41,8 +102,52 @@ public class HomeController {
         {
             new RuntimeException("Not Found "+userName);
         }
+
+        if("job".equals(add))
+        {
+            userProfile.getJobs().add(new Job());
+        }
+        else if("education".equals(add))
+        {
+            userProfile.getEducations().add(new Education());
+        }
+        else if("skill".equals(add))
+        {
+            userProfile.getSkills().add("");
+        }
+
         model.addAttribute("userProfile", userProfile);
         return "edit-page";
+    }
+
+    @GetMapping("/delete")
+    public String edit(Model model, Principal principal, @RequestParam String type, @RequestParam int index)
+    {
+        String userName = principal.getName();
+
+        UserProfile userProfile = userProfileRepository.findByUserName(userName);
+        if(userProfile == null)
+        {
+            new RuntimeException("Not Found "+userName);
+        }
+
+        if("job".equals(type))
+        {
+            userProfile.getJobs().remove(index);
+        }
+        else if("education".equals(type))
+        {
+            userProfile.getEducations().remove(index);
+        }
+        else if("skill".equals(type))
+        {
+            userProfile.getSkills().remove(index);
+        }
+
+        userProfileRepository.save(userProfile);
+
+        return "redirect:/edit/";
+
     }
 
     @PostMapping("/edit")
@@ -73,8 +178,15 @@ public class HomeController {
     }
 
     @GetMapping("/view/{userName}")
-    public String view(@PathVariable String userName, Model model)
+    public String view(Principal principal, @PathVariable String userName, Model model)
     {
+
+        if (principal != null && principal.getName() != "")
+        {
+            boolean currentUserProfile = principal.getName().equals(userName);
+            model.addAttribute("currentUserProfile", currentUserProfile);
+
+        }
 
         Job job = new Job();
         UserProfile userProfile = userProfileRepository.findByUserName(userName);
