@@ -8,7 +8,9 @@ import com.project.resumebuilder.models.User;
 import com.project.resumebuilder.models.UserProfile;
 import com.project.resumebuilder.repositories.UserProfileRepository;
 import com.project.resumebuilder.repositories.UserRepository;
+import com.project.resumebuilder.services.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
 
@@ -184,4 +187,87 @@ public class HomeController {
 
         return "resume-templates/"+userProfile.getThemeChoice()+"/index";
     }
+
+
+    @GetMapping("/forgot-password")
+    public String forgotPassword()
+    {
+        return "forgot-password";
+    }
+
+
+    @Autowired
+    EmailSenderService emailSenderService;
+    @PostMapping("/send-mail")
+    public String triggerMail(@RequestParam String userEmail, HttpSession session)
+    {
+        System.out.println(userEmail);
+        User user = userRepository.findByEmail(userEmail);
+        String email = user.getEmail();
+        int otpSize = 6;
+        char[] o = new char[otpSize];
+        o = emailSenderService.generateOTP(otpSize);
+        String otp = String.valueOf(o);
+        user.setOtp(otp);
+        userRepository.save(user);
+        String subject = "Forgot Password - OTP";
+        String body = "This is your OTP " + otp + "\n Enter this OTP to change your password.";
+        emailSenderService.sendEmail(email, subject, body);
+        session.setAttribute("email", userEmail);//its like key:value. first paramenter is key, second is value
+                                                        // Using HTTP Session to save Email in the session. Because, while verifying the OTP we have to get the User object. For getting the User object we need Email and after getting the User object, we can verify the OTP from database and the OTP entered in the form.
+        return  "enter-otp";
+    }
+
+    @PostMapping("verify-otp")
+    public String verifyOTP(Model model, HttpSession session, @RequestParam String mailOTP)
+    {
+        String userEmail = (String)session.getAttribute("email"); // This is the key of HTTP Session Attribute
+                                                                        // Session returns an object, so we need to type cast
+        System.out.println(userEmail);
+        User user = userRepository.findByEmail(userEmail);
+        String databaseOTP = user.getOtp();
+        boolean isOTPMatch = false;
+        model.addAttribute("isOTPMatch", isOTPMatch);
+        if (databaseOTP.equals(mailOTP))
+        {
+            isOTPMatch = true;
+            model.addAttribute("isOTPMatch", isOTPMatch);
+
+            System.out.println("OTP Matched");
+            return "new-password";
+        }
+
+        else
+            return "enter-otp";
+    }
+
+    @PostMapping("/change-password")
+    public String changePassword(Model model, HttpSession session, @RequestParam String password1, @RequestParam String password2)
+    {
+        String userEmail = (String)session.getAttribute("email");
+        User user = userRepository.findByEmail(userEmail);
+        System.out.println(password1);
+        System.out.println(password2);
+        boolean isPasswordMatch = false;
+        model.addAttribute("isPasswordMatch", isPasswordMatch);
+
+        if(password1.equals(password2))
+        {
+            System.out.println("Both pass words match.");
+            isPasswordMatch = true;
+            model.addAttribute("isPasswordMatch", isPasswordMatch);
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String encodedPassword = encoder.encode(password1);
+            user.setPassword(encodedPassword);
+            userRepository.save(user);
+            return "login";
+        }
+        else
+        {
+            return "new-password";
+        }
+
+
+    }
+
 }

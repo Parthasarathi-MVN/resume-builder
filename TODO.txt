@@ -2,3 +2,6 @@ TODO:
 --> Add Dynamic loading to other resume themes.
 --> Add forgot password and generate mail to reset password using OAuth or OAuth2.
 --> Understand configure method in WebSecurityConfiguration.
+--> Add a way to store images
+--> Difference betweem th.field and th.value
+ th.value can be accessed from frontend to backend using @RequestParam

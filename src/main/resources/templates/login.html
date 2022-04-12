@@ -20,12 +20,20 @@
     </div>
 
 
+
     <div style="max-width: 600px;  margin: 0 auto" id="invalidPassUser" th:if="${param.error}" class="alert alert-danger" role="alert">
         Invalid username or password
     </div>
 
     <div style="max-width: 600px;  margin: 0 auto" id="loggedOut"  th:if="${param.logout}" class="alert alert-success" role="alert">
         Successfully logged out
+    </div>
+
+
+
+    <!--Pop up if password is successfully changed-->
+    <div style="max-width: 600px;  margin: 0 auto" th:if="${isPasswordMatch} == true" class="alert alert-success" role="alert">
+        Password changed successfully. You can now login with new password.
     </div>
 
     <div class="text-center">
@@ -59,6 +67,9 @@
 
                             name="password"
                     />
+                </div>
+                <div>
+                    <p><a th:href="@{/forgot-password}">Forgot Password?</a></p>
                 </div>
             </div>
 
