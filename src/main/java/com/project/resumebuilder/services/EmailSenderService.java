@@ -1,5 +1,6 @@
 package com.project.resumebuilder.services;
 
+import com.project.resumebuilder.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -34,6 +35,26 @@ public class EmailSenderService {
             otp[i] = numbers.charAt(random.nextInt(numbers.length()));
         }
         return otp;
+    }
+
+
+    public void sendVerificationEmail(User user, String siteURL)
+    {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        String subject = "Verify your email";
+        String body = "Dear [[name]],<br>"
+                + "Please click the link below to verify your registration:<br>"
+                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+                + "Thank you,<br>";
+        body = body.replace("[[name]]", user.getUserName());
+        String verifyURL = siteURL + "/verify?code=" + user.getVerification_code();
+        body = body.replace("[[URL]]", verifyURL);
+        message.setTo(user.getEmail());
+        message.setSubject(subject);
+        message.setText(body);
+        message.setFrom("pranavmisgay@gmail.com");
+        javaMailSender.send(message);
     }
 
 

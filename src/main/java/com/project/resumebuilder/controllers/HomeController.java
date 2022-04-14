@@ -9,7 +9,9 @@ import com.project.resumebuilder.models.UserProfile;
 import com.project.resumebuilder.repositories.UserProfileRepository;
 import com.project.resumebuilder.repositories.UserRepository;
 import com.project.resumebuilder.services.EmailSenderService;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
@@ -33,17 +36,48 @@ public class HomeController {
     UserRepository userRepository;
 
 
-
     @PostMapping("/register")
-    public String signUp(User user)
+    public String signUp(User user, HttpServletRequest request)
     {
 
-        user.setActive(true);
+//        user.setActive(true);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+
+        String randomCode = RandomString.make(64);
+        user.setVerification_code(randomCode);
+        user.setEnabled(false);
+
         userRepository.save(user);
+        String siteURL = request.getRequestURL().toString();
+
+        emailSenderService.sendVerificationEmail(user, siteURL.replace(request.getServletPath(), ""));
+        System.out.println(siteURL.replace(request.getServletPath(), ""));
         return "redirect:/login";
+    }
+
+    @GetMapping("/verify")
+    public String verifyUser(@Param("code") String code)
+    {
+        User user = userRepository.findByverification_code(code);
+
+        if(code == null)  //There must be some code after /verify. Checking if this route does not actually exist and returning "Oops" page.
+        {
+            return "oops";
+        }
+
+        if(user == null || user.isEnabled())
+        {
+            return "verify-fail";
+        }
+        else
+        {
+            user.setVerification_code(null);
+            user.setEnabled(true);
+            userRepository.save(user);
+            return "verify-success";
+        }
     }
 
     @GetMapping("/")
@@ -85,13 +119,25 @@ public class HomeController {
     @GetMapping("/edit")
     public String edit(Principal principal, Model model, @RequestParam(required = false) String add)
     {
+//        UserProfile userP = new UserProfile();
+
         String userName = principal.getName();
+
+//        userP.setUserName(userName);
+//        userProfileRepository.save(userP); // Initially adding the user_name to UserProfile table. Becuase once a User signs up, if he clicks on "make your resume", then there would be Null error as there was no user_name in UserProfile table. Simply, this enables user to make resume as soon as they Sign Up and Login for the first time.
+
         model.addAttribute("userName", userName);
 
         UserProfile userProfile = userProfileRepository.findByUserName(userName);
+//        if(userProfile == null)
+//        {
+//            new RuntimeException("Not Found "+userName);
+//        }
+
         if(userProfile == null)
         {
-            new RuntimeException("Not Found "+userName);
+            userProfile.setUserName(userName);
+            userProfileRepository.save(userProfile);
         }
 
         if("job".equals(add))

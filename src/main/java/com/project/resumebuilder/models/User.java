@@ -13,9 +13,31 @@ public class User {
     private int id;
     private String userName;
     private String password;
-    private boolean active;
+//    private boolean active;
     private String email;
     private String otp;
+
+    private String verification_code;
+    private boolean enabled;
+
+    public String getVerification_code() {
+        return verification_code;
+    }
+
+    public void setVerification_code(String verification_code) {
+        this.verification_code = verification_code;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+
+
 
     public String getOtp() {
         return otp;
@@ -54,10 +76,10 @@ public class User {
         this.password = password;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+//    public boolean isActive() {
+//        return active;
+//    }
+//    public void setActive(boolean active) {
+//        this.active = active;
+//    }
 }

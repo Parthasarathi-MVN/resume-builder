@@ -7,6 +7,14 @@
 
 </head>
 <body>
+
+
+<div th:if="${#authentication == null}">
+
+</div>
+
+
+
 <!--<h1>Welcome <b th:text="${userProfile.firstName + ' ' + userProfile.firstName}"></b></h1>-->
 <!--this above line is leading to null as we do not capture firstName and lastName in the beginning of registration process and after logging in we redirect to this page. This is creating a problem to catch firstName/lastName and render it.-->
 
