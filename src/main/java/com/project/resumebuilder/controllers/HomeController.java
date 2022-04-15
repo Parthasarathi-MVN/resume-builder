@@ -119,12 +119,7 @@ public class HomeController {
     @GetMapping("/edit")
     public String edit(Principal principal, Model model, @RequestParam(required = false) String add)
     {
-//        UserProfile userP = new UserProfile();
-
         String userName = principal.getName();
-
-//        userP.setUserName(userName);
-//        userProfileRepository.save(userP); // Initially adding the user_name to UserProfile table. Becuase once a User signs up, if he clicks on "make your resume", then there would be Null error as there was no user_name in UserProfile table. Simply, this enables user to make resume as soon as they Sign Up and Login for the first time.
 
         model.addAttribute("userName", userName);
 
@@ -137,7 +132,7 @@ public class HomeController {
         if(userProfile == null)
         {
             userProfile.setUserName(userName);
-            userProfileRepository.save(userProfile);
+            userProfileRepository.save(userProfile);// Initially adding the user_name to UserProfile table. Becuase once a User signs up, if he clicks on "make your resume", then there would be Null error as there was no user_name in UserProfile table. Simply, this enables user to make resume as soon as they Sign Up and Login for the first time.
         }
 
         if("job".equals(add))
@@ -155,6 +150,8 @@ public class HomeController {
         model.addAttribute("userProfile", userProfile);
         return "edit-page";
     }
+
+
 
     @GetMapping("/delete")
     public String edit(Model model, Principal principal, @RequestParam String type, @RequestParam int index)
@@ -200,7 +197,8 @@ public class HomeController {
         }
 
         userProfileRepository.save(userProfile);
-        return "redirect:/view/" + userName;
+        return "redirect:/edit/";
+//        return "redirect:/view/" + userName;
     }
 
 
